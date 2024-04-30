@@ -13,8 +13,8 @@ app.use(express.json())
 app.use(morgan('combined'))
 app.use(helmet())
 
-//Connect to mongoDB
 ;(async () => {
+  //Connect to mongoDB
   try {
     await mongoose.connect(process.env.MONGODB_URI || '')
     console.log('Connected to database successfully')
