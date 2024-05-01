@@ -9,5 +9,7 @@
       "forceConsistentCasingInFileNames": true
     },
     "include": ["src/**/*.ts",".env"],
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules"],
+    "outDir": "./dist"
+
   }
