@@ -15,6 +15,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "build": "rm -rf build "
+    "build": "rm -rf build ",
+    "start": "node src/index.js"
   }
 }
