@@ -44,7 +44,7 @@ router.get('/courses/semesters', async (req, res) => {
     const semesterId = req.query.semesterId
     const semester = await Semesters.find(
       { semester: semesterId },
-      { subjects: 1 }
+      { semester: 0, _id: 0 }
     )
     res.json(semester)
   } catch (error) {
