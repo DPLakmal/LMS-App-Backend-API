@@ -8,7 +8,25 @@ const router = express.Router()
 router.use(express.json())
 
 router.post('/register', async (req, res) => {
-  const { username, password } = req.body
+  const { username, email, role } = req.body
+
+  try {
+    // Check if username already exists
+    const existingUser = await User.findOne({ email })
+    if (existingUser) {
+      return res.status(200).json({ message: 'Username already exists' })
+    }
+    const user = new User({ username, email, role })
+    const newUser = await user.save()
+    res.status(201).json(newUser)
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+})
+
+//for student
+router.post('/student/register', async (req, res) => {
+  const { username, email, role } = req.body
 
   try {
     // Check if username already exists
@@ -17,7 +35,7 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ message: 'Username already exists' })
     }
 
-    const user = new User({ username, password })
+    const user = new User({ username, email, role })
     const newUser = await user.save()
     res.status(201).json(newUser)
   } catch (error) {
@@ -25,15 +43,14 @@ router.post('/register', async (req, res) => {
   }
 })
 
-router.get('/login', async (req, res) => {
-  const username = req.body
-
+router.post('/login', async (req, res) => {
+  const { email } = req.body
   try {
     // Check if username already exists
-    const existingUser = await User.findById({ username })
-    res.json(existingUser)
+    const existingUser = await User.findOne({ email })
+    return res.json(existingUser).status(200)
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    return res.status(500).json({ message: error.message })
   }
 })
 
