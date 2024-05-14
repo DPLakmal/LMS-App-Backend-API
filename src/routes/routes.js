@@ -94,4 +94,14 @@ router.get('/announcement', async (req, res) => {
   }
 })
 
+//Delete one announcement
+router.delete('/announcement/:id', async (req, res) => {
+  try {
+    const id = req.params.id
+    const deletedAnnouncement = await Announcement.findByIdAndDelete(id)
+    res.send(`${deletedAnnouncement.title} has been deleted!`)
+  } catch (error) {
+    res.status(400).json({ meessage: error.meessage })
+  }
+})
 export default router
