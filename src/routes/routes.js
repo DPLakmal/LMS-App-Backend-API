@@ -1,6 +1,7 @@
 import express from 'express'
 import User from '../models/user.js'
 import Semesters from '../models/semesters.js'
+import Announcement from '../models/announcement.js'
 
 const router = express.Router()
 
@@ -66,6 +67,30 @@ router.get('/courses/semesters', async (req, res) => {
     res.json(semester)
   } catch (error) {
     res.status(500).json({ message: error.message })
+  }
+})
+
+// announcement
+
+router.post('/announcement', async (req, res) => {
+  const { title, description } = req.body
+  try {
+    const announcement = new Announcement({ title, description })
+    const newAnnouncement = await announcement.save()
+    res.status(201).json(newAnnouncement)
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+})
+
+// read and send to frontend
+
+router.get('/announcement', async (req, res) => {
+  try {
+    const announcement = await Announcement.find()
+    res.status(200).json(announcement)
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
   }
 })
 
