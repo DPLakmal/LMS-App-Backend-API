@@ -106,7 +106,7 @@ router.get('/announcement', async (req, res) => {
 })
 
 //Delete one announcement
-router.delete('/announcement/:id', async (req, res) => {
+router.delete('/announcement', async (req, res) => {
   try {
     const id = req.query.id
     const deletedAnnouncement = await Announcement.findByIdAndDelete(id)
