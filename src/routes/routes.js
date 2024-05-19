@@ -110,7 +110,7 @@ router.delete('/announcement', async (req, res) => {
   try {
     const id = req.query.id
     const deletedAnnouncement = await Announcement.findByIdAndDelete(id)
-    res.send(`${deletedAnnouncement.title} has been deleted!`)
+    return res.send(`${deletedAnnouncement.title} has been deleted!`)
   } catch (error) {
     res.status(400).json({ meessage: error.meessage })
   }
