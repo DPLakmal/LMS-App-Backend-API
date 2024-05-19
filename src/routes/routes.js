@@ -2,6 +2,9 @@ import express from 'express'
 import User from '../models/user.js'
 import Semesters from '../models/semesters.js'
 import Announcement from '../models/announcement.js'
+import Pastpapers from '../models/pastpapers.js'
+import Weeks from '../models/week.js'
+import Subject from '../models/subject.js'
 
 const router = express.Router()
 
@@ -59,11 +62,8 @@ router.post('/login', async (req, res) => {
 
 router.get('/courses/semesters', async (req, res) => {
   try {
-    const semesterId = req.query.semesterId
-    const semester = await Semesters.find(
-      { semester: semesterId },
-      { semester: 0, _id: 0 }
-    )
+    const semesterId = req.query.id
+    const semester = await Semesters.findOne({ semester: semesterId })
     res.json(semester)
   } catch (error) {
     res.status(500).json({ message: error.message })
@@ -97,11 +97,42 @@ router.get('/announcement', async (req, res) => {
 //Delete one announcement
 router.delete('/announcement/:id', async (req, res) => {
   try {
-    const id = req.params.id
+    const id = req.query.id
     const deletedAnnouncement = await Announcement.findByIdAndDelete(id)
     res.send(`${deletedAnnouncement.title} has been deleted!`)
   } catch (error) {
     res.status(400).json({ meessage: error.meessage })
+  }
+})
+
+//
+
+router.get('/pastpapers', async (req, res) => {
+  try {
+    const code = req.query.code
+    const announcement = await Pastpapers.findOne({ code: code })
+    res.status(200).json(announcement)
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+})
+router.get('/weeks', async (req, res) => {
+  try {
+    const id = req.query.id
+    const week = await Weeks.findOne({ id: id })
+    res.status(200).json(week)
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+})
+
+router.get('/courses/subject', async (req, res) => {
+  try {
+    const code = req.query.code
+    const announcement = await Subject.findOne({ code: code })
+    res.status(200).json(announcement)
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
   }
 })
 export default router

@@ -4,7 +4,6 @@ const { Schema, models } = mongoose
 const subjectSchema = new Schema({
   code: String,
   title: String,
-  coverImg: String,
   credit: Number,
 })
 
