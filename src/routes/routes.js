@@ -5,6 +5,7 @@ import Announcement from '../models/announcement.js'
 import Pastpapers from '../models/pastpapers.js'
 import Weeks from '../models/week.js'
 import Subject from '../models/subject.js'
+import LecturerAnnouncement from '../models/announcement-lecturer.js'
 
 const router = express.Router()
 
@@ -78,6 +79,16 @@ router.post('/announcement', async (req, res) => {
     const announcement = new Announcement({ title, description })
     const newAnnouncement = await announcement.save()
     res.status(201).json(newAnnouncement)
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+})
+// announcement
+
+router.get('/lecturerannouncement', async (req, res) => {
+  try {
+    const lannouncement = await LecturerAnnouncement.find()
+    res.status(200).json(lannouncement)
   } catch (error) {
     return res.status(500).json({ message: error.message })
   }
