@@ -78,7 +78,7 @@ router.post('/announcement', async (req, res) => {
   try {
     const announcement = new Announcement({ title, description })
     const newAnnouncement = await announcement.save()
-    res.status(201).json(newAnnouncement)
+    return res.status(201).json(newAnnouncement)
   } catch (error) {
     return res.status(500).json({ message: error.message })
   }
@@ -88,7 +88,7 @@ router.post('/announcement', async (req, res) => {
 router.get('/lecturerannouncement', async (req, res) => {
   try {
     const lannouncement = await LecturerAnnouncement.find()
-    res.status(200).json(lannouncement)
+    return res.status(200).json(lannouncement)
   } catch (error) {
     return res.status(500).json({ message: error.message })
   }
