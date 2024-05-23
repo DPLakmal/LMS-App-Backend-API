@@ -11,7 +11,8 @@ const lecturer = new Schema({
 })
 
 const weeksSchema = new Schema({
-  id: String,
+  week_no: String,
+  subject_code: String,
   lms: [lms],
   lecturer: [lecturer],
 })
