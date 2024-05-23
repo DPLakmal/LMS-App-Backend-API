@@ -129,13 +129,55 @@ router.get('/pastpapers', async (req, res) => {
     return res.status(500).json({ message: error.message })
   }
 })
-router.get('/weeks', async (req, res) => {
+router.get('/:subject_code/weeks', async (req, res) => {
   try {
-    const id = req.query.id
-    const week = await Weeks.findOne({ id: id })
+    const { subject_code } = req.params // Extract subject_code from URL parameters
+    const { week_no } = req.query
+    const week = await Weeks.findOne({ subject_code, week_no })
     res.status(200).json(week)
   } catch (error) {
     return res.status(500).json({ message: error.message })
+  }
+})
+router.post('/:subject_code/weeks', async (req, res) => {
+  try {
+    const { subject_code } = req.params // Extract subject_code from URL parameters
+    const { week_no } = req.query // Extract week_no from query parameters
+    const { title, link, type } = req.body // Extract title, link, and type from request body
+
+    console.log(subject_code, week_no, { title, link, type })
+
+    if (!title || !link || !type) {
+      return res
+        .status(400)
+        .json({ message: 'Title, link, and type are required' })
+    }
+
+    // Find the week by subject_code and week_no
+    let week = await Weeks.findOne({ subject_code, week_no })
+
+    if (!week) {
+      // If the week is not found, create a new week
+      week = new Weeks({ subject_code, week_no, lms: [], lecturer: [] })
+    }
+
+    const newEntry = { title, link }
+
+    if (type === 'lms') {
+      week.lms.push(newEntry) // Add new entry to lms array
+    } else if (type === 'lecturer') {
+      week.lecturer.push(newEntry) // Add new entry to lecturer array
+    } else {
+      return res
+        .status(400)
+        .json({ message: "Type must be 'lms' or 'lecturer'" })
+    }
+
+    const updatedWeek = await week.save() // Save the updated week document
+
+    res.status(200).json(updatedWeek) // Respond with the updated week document
+  } catch (error) {
+    return res.status(500).json({ message: error.message }) // Error handling
   }
 })
 
