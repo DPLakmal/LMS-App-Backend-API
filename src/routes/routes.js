@@ -85,6 +85,21 @@ router.post('/announcement', async (req, res) => {
 })
 // announcement
 
+router.post('/lecturerannouncement', async (req, res) => {
+  const { title, description, lecturer } = req.body
+  try {
+    const announcement = new LecturerAnnouncement({
+      title,
+      description,
+      lecturer,
+    })
+    const newAnnouncement = await announcement.save()
+    return res.status(201).json(newAnnouncement)
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+})
+
 router.get('/lecturerannouncement', async (req, res) => {
   try {
     const lannouncement = await LecturerAnnouncement.find()

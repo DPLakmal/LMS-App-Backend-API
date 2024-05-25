@@ -2,16 +2,22 @@ import mongoose from 'mongoose'
 
 const { Schema, models } = mongoose
 
-const lecturerAnnouncementSchema = new Schema({
-  title: {
-    type: String,
-    required: true,
+const lecturerAnnouncementSchema = new Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    lecturer: {
+      type: String,
+    },
   },
-  description: {
-    type: String,
-    required: true,
-  },
-})
+  { timestamps: true }
+)
 
 const LecturerAnnouncement =
   models.Lecturerannouncement ||
